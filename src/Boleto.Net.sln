@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Biblioteca", "Biblioteca", "{75FC8289-5B1E-4684-8497-54494382FA55}"
 	ProjectSection(SolutionItems) = preProject
@@ -54,12 +54,43 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Boleto.Net.Site", "Boleto.N
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "3304"
+	EndProjectSection
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "SAK"
+		SccAuxPath = "SAK"
+		SccLocalPath = "SAK"
+		SccProvider = "SAK"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.1"
+		ProjectReferences = "{F173E80B-E36B-48AD-B483-A27F8CA86F3C}|Boleto.Net.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/Boleto.Net.Site"
+		Debug.AspNetCompiler.PhysicalPath = "Boleto.Net.Site\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Boleto.Net.Site\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Boleto.Net.Site"
+		Release.AspNetCompiler.PhysicalPath = "Boleto.Net.Site\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Boleto.Net.Site\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3304"
 		SlnRelativePath = "Boleto.Net.Site\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Testes", "Boleto.Net.Testes\Boleto.Net.Testes.csproj", "{92951948-996F-4F22-AB35-74B06C45E1D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.MVC", "Boleto.Net.MVC\Boleto.Net.MVC.csproj", "{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homologação", "Homologação", "{30296D8F-712C-4CDA-AAB6-98D0630F2AA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Homologacao", "Boleto.Net.Homologacao\Boleto.Net.Homologacao.csproj", "{208427D8-AAA8-4F5E-991C-EE7A62541686}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wi2", "Wi2", "{C830E8F8-20C1-4C58-AA4A-FE84ADFDD915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoletoNet.Wi2", "BoletoNet.Wi2\BoletoNet.Wi2.csproj", "{4F4FF43F-0748-4F59-9442-60568FC59C47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +152,30 @@ Global
 		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Debug|.NET.Build.0 = Debug|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Release|.NET.ActiveCfg = Release|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Release|.NET.Build.0 = Release|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{208427D8-AAA8-4F5E-991C-EE7A62541686}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Debug|.NET.Build.0 = Debug|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Release|.NET.ActiveCfg = Release|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Release|.NET.Build.0 = Release|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4F4FF43F-0748-4F59-9442-60568FC59C47}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,5 +188,7 @@ Global
 		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167} = {057F8124-1BE5-46CB-B2EF-106CD4325B93}
 		{92951948-996F-4F22-AB35-74B06C45E1D4} = {8C6CE2CA-61F8-489B-A803-27437835E300}
 		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B} = {717CBD6F-C429-445D-95B0-191CEAA7A088}
+		{208427D8-AAA8-4F5E-991C-EE7A62541686} = {30296D8F-712C-4CDA-AAB6-98D0630F2AA3}
+		{4F4FF43F-0748-4F59-9442-60568FC59C47} = {C830E8F8-20C1-4C58-AA4A-FE84ADFDD915}
 	EndGlobalSection
 EndGlobal
