@@ -1,9 +1,121 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.IO;
+using BoletoNet.Excecoes;
+using System.Collections.Generic;
 
 namespace BoletoNet.Wi2
 {
+
+    [ComVisible(true)]
+    [Guid("8EBC8DD1-65AC-4745-88CE-E5112D1A5BB0")]
+    [ProgId("BoletoNet.Wi2.Cobranca")]
+    [ClassInterface(ClassInterfaceType.AutoDual)]
+    public class Cobranca
+    {
+
+        public Cobranca() { }
+
+        public string GerarBoletoHTML(string caminhoJSON, string conteudoJson)
+        {
+            try
+            {
+                JsonLeitor reader = new JsonLeitor();
+                JsonMapeador mapeador = new JsonMapeador();
+                RootJson json = reader.LerConfiguracao(caminhoJSON, conteudoJson);
+
+                List<BoletoBancario> boletosBancarios = mapeador.ConverterBoletoBancario(json.BoletoBancario);
+
+                return boletosBancarios[0].MontaHtml();
+            }
+            catch (Exception ex)
+            {
+                return $"ERRO: {ex.Message}";
+            }
+        }
+
+        public string GerarBoletosPDF(string caminhoJSON, string conteudoJson)
+        {
+            try
+            {
+                JsonLeitor reader = new JsonLeitor();
+                JsonMapeador mapeador = new JsonMapeador();
+                RootJson json = reader.LerConfiguracao(caminhoJSON, conteudoJson);
+
+                List<BoletoBancario> boletosBancarios = mapeador.ConverterBoletoBancario(json.BoletoBancario);
+
+                string diretorioPDF = json.BoletoBancario.CaminhoPDF;
+
+                if (!Directory.Exists(diretorioPDF))
+                {
+                    Directory.CreateDirectory(diretorioPDF);
+                }
+
+                foreach (var item in boletosBancarios)
+                {
+                    item.Boleto.Valida();
+                    string caminhoPDF = Path.Combine(diretorioPDF, $"Boleto_{item.Boleto.NossoNumero}.pdf");
+                    File.WriteAllBytes(caminhoPDF, item.MontaBytesPDF());
+                }
+
+                return "Boletos gerados com sucesso";
+            }
+            catch (Exception ex)
+            {
+                return $"ERRO: {ex.Message}";
+            }
+        }
+
+
+        public string GerarRemessa(string caminhoJSON, string conteudoJson)
+        {
+            try
+            {
+
+                JsonLeitor reader = new JsonLeitor();
+                JsonMapeador mapeador = new JsonMapeador();
+                RootJson json = reader.LerConfiguracao(caminhoJSON, conteudoJson);
+
+                Boletos boletos = mapeador.ConverterBoletos(json.BoletoBancario);
+
+                if (!Directory.Exists(json.Remessa.CaminhoRemessa))
+                {
+                    Directory.CreateDirectory(json.Remessa.CaminhoRemessa);
+                }
+
+                string caminhoRemessa = Path.Combine(json.Remessa.CaminhoRemessa, $"REMESSA_{DateTime.Now:yyyyMMddHHmmss}.txt");
+
+                TipoArquivo tipoArquivoRemessa;
+                Enum.TryParse(json.Remessa.TipoArquivo, true, out tipoArquivoRemessa);
+                var arquivoRemessa = new ArquivoRemessa(tipoArquivoRemessa);
+
+                using (var fileStream = new FileStream(caminhoRemessa, FileMode.Create))
+                {
+                    arquivoRemessa.GerarArquivoRemessa("", boletos.Banco, boletos.Cedente, boletos, fileStream, 1);
+                }
+
+                // 7. Validação do Arquivo Remessa
+                arquivoRemessa.ValidarArquivoRemessa(
+                    "",
+                    boletos.Banco,
+                    boletos.Cedente,
+                    boletos,
+                    1,
+                    out string mensagemValidacao);
+
+                if (!string.IsNullOrEmpty(mensagemValidacao))
+                    throw new Exception($"Erro na remessa: {mensagemValidacao}");
+
+                return "Arquivo remessa gerado com sucesso";
+            }
+            catch (Exception ex)
+            {
+                return $"ERRO: {ex.Message}";
+            }
+        }
+    }
+
+
 
     [ComVisible(true)]
     [Guid("12345678-ABCD-1234-EFAB-1234567890AB")]
@@ -30,6 +142,7 @@ namespace BoletoNet.Wi2
         {
             try
             {
+
                 // 1. Configuração do Banco
                 Banco bancoObj;
                 string codigoBanco;

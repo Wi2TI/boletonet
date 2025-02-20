@@ -55,6 +55,10 @@
       <Project>{f173e80b-e36b-48ad-b483-a27f8ca86f3c}</Project>
       <Name>Boleto.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BoletoNet.Wi2\BoletoNet.Wi2.csproj">
+      <Project>{4f4ff43f-0748-4f59-9442-60568fc59c47}</Project>
+      <Name>BoletoNet.Wi2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
