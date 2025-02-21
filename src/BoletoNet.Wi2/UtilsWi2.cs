@@ -3,10 +3,13 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace BoletoNet.Wi2
 {
-    public static class Utils
+    public static class UtilsWi2
     {
         /// <summary>
         /// Converte um inteiro para booleano.

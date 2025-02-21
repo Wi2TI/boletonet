@@ -155,8 +155,8 @@ namespace BoletoNet.Wi2
                 {
                     CodigoBanco = short.Parse(boletoJson.CodigoBanco),
                     Boleto = item,
-                    MostrarEnderecoCedente = (boletoJson.MostrarEnderecoCedente==1),
-                    MostrarComprovanteEntrega = (boletoJson.MostrarComprovanteEntrega==1),
+                    MostrarEnderecoCedente = (boletoJson.MostrarEnderecoCedente.Equals("1")),
+                    MostrarComprovanteEntrega = (boletoJson.MostrarComprovanteEntrega.Equals("1"))
                 };
 
                 switch (boletoJson.CodigoBanco.ToLower())

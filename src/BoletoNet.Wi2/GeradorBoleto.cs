@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.IO;
-using BoletoNet.Excecoes;
 using System.Collections.Generic;
+using BoletoNet;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+using PdfiumViewer;
 
 namespace BoletoNet.Wi2
 {
@@ -18,6 +21,8 @@ namespace BoletoNet.Wi2
 
         public string GerarBoletoHTML(string caminhoJSON, string conteudoJson)
         {
+            string nomeArquivo, caminhoHTML;
+            
             try
             {
                 JsonLeitor reader = new JsonLeitor();
@@ -26,11 +31,20 @@ namespace BoletoNet.Wi2
 
                 List<BoletoBancario> boletosBancarios = mapeador.ConverterBoletoBancario(json.BoletoBancario);
 
-                return boletosBancarios[0].MontaHtml();
+                foreach (var item in boletosBancarios)
+                {
+                    item.Boleto.Valida();
+
+                    nomeArquivo = Regex.Replace(item.Boleto.CodigoBarra.LinhaDigitavel, @"[^\d]", "");
+                    caminhoHTML = Path.Combine(json.BoletoBancario.CaminhoPDF, $"{nomeArquivo}.html");
+
+                    item.MontaHtmlNoArquivoLocal(caminhoHTML);
+                }
+                return "";
             }
             catch (Exception ex)
             {
-                return $"ERRO: {ex.Message}";
+                return $"ERRO: {ex}";
             }
         }
 
@@ -44,6 +58,7 @@ namespace BoletoNet.Wi2
 
                 List<BoletoBancario> boletosBancarios = mapeador.ConverterBoletoBancario(json.BoletoBancario);
 
+
                 string diretorioPDF = json.BoletoBancario.CaminhoPDF;
 
                 if (!Directory.Exists(diretorioPDF))
@@ -56,22 +71,63 @@ namespace BoletoNet.Wi2
                     item.Boleto.Valida();
                     string caminhoPDF = Path.Combine(diretorioPDF, $"Boleto_{item.Boleto.NossoNumero}.pdf");
                     File.WriteAllBytes(caminhoPDF, item.MontaBytesPDF());
+
+                    using (var document = PdfDocument.Load(caminhoPDF).CreatePrintDocument())
+                    {
+                        document.Print();
+                    }
                 }
 
-                return "Boletos gerados com sucesso";
+
+                return "";
             }
             catch (Exception ex)
             {
-                return $"ERRO: {ex.Message}";
+                return $"ERRO: {ex}";
+            }
+        }
+
+        public class PdfGeneratorWrapper
+        {
+            public static void GerarPdf(string inputPdfPath)
+            {
+
+                string appDir = AppDomain.CurrentDomain.BaseDirectory;
+                // Caminho para o executável x64 (ajuste conforme necessário)
+                string x64ExePath = Path.Combine(appDir, "PdfGeneratorx64.exe");
+
+                // Verifica se o arquivo existe
+                if (!File.Exists(x64ExePath))
+                {
+                    throw new FileNotFoundException("PdfGeneratorx64.exe não encontrado no diretório da aplicação.");
+                }
+
+                var processStartInfo = new ProcessStartInfo
+                {
+                    FileName = x64ExePath,
+                    Arguments = $"\"{inputPdfPath}\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true
+                };
+
+                using (var process = Process.Start(processStartInfo))
+                {
+                    process.WaitForExit(10000); // Timeout de 10 segundos
+
+                    string output = process.StandardOutput.ReadToEnd();
+
+                    if (process.ExitCode != 0)
+                        throw new Exception($"Erro na geração: {output}");
+                }
             }
         }
 
 
-        public string GerarRemessa(string caminhoJSON, string conteudoJson)
+        public string GerarRemessa(string caminhoJSON, string conteudoJson, string nomeArquivo)
         {
             try
             {
-
                 JsonLeitor reader = new JsonLeitor();
                 JsonMapeador mapeador = new JsonMapeador();
                 RootJson json = reader.LerConfiguracao(caminhoJSON, conteudoJson);
@@ -83,7 +139,8 @@ namespace BoletoNet.Wi2
                     Directory.CreateDirectory(json.Remessa.CaminhoRemessa);
                 }
 
-                string caminhoRemessa = Path.Combine(json.Remessa.CaminhoRemessa, $"REMESSA_{DateTime.Now:yyyyMMddHHmmss}.txt");
+                if (string.IsNullOrWhiteSpace(nomeArquivo)) nomeArquivo = $"REMESSA_{DateTime.Now:yyyyMMddHHmmss}.txt";
+                string caminhoRemessa = Path.Combine(json.Remessa.CaminhoRemessa, nomeArquivo);
 
                 TipoArquivo tipoArquivoRemessa;
                 Enum.TryParse(json.Remessa.TipoArquivo, true, out tipoArquivoRemessa);
@@ -91,26 +148,26 @@ namespace BoletoNet.Wi2
 
                 using (var fileStream = new FileStream(caminhoRemessa, FileMode.Create))
                 {
-                    arquivoRemessa.GerarArquivoRemessa("", boletos.Banco, boletos.Cedente, boletos, fileStream, 1);
+                    arquivoRemessa.GerarArquivoRemessa(json.Remessa.NumeroConvenio, boletos.Banco, boletos.Cedente, boletos, fileStream, int.Parse(json.Remessa.NumeroArquivoRemessa));
                 }
 
                 // 7. Validação do Arquivo Remessa
                 arquivoRemessa.ValidarArquivoRemessa(
-                    "",
+                    json.Remessa.NumeroConvenio,
                     boletos.Banco,
                     boletos.Cedente,
                     boletos,
-                    1,
+                    int.Parse(json.Remessa.NumeroArquivoRemessa),
                     out string mensagemValidacao);
 
                 if (!string.IsNullOrEmpty(mensagemValidacao))
                     throw new Exception($"Erro na remessa: {mensagemValidacao}");
 
-                return "Arquivo remessa gerado com sucesso";
+                return $"{caminhoRemessa}";
             }
             catch (Exception ex)
             {
-                return $"ERRO: {ex.Message}";
+                return $"ERRO: {ex}";
             }
         }
     }

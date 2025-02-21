@@ -1234,7 +1234,7 @@ namespace BoletoNet
         {
             using (FileStream f = new FileStream(fileName, FileMode.Create))
             {
-                StreamWriter w = new StreamWriter(f, System.Text.Encoding.Default);
+                StreamWriter w = new StreamWriter(f, System.Text.Encoding.UTF8);
                 w.Write(MontaHtml());
                 w.Close();
                 f.Close();

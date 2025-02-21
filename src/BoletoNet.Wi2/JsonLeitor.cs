@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -17,6 +18,12 @@ namespace BoletoNet.Wi2
 
         [JsonPropertyName("caminhoRemessa")]
         public string CaminhoRemessa { get; set; }
+        
+        [JsonPropertyName("numeroArquivoRemessa")]
+        public string NumeroArquivoRemessa { get; set; }
+
+        [JsonPropertyName("numeroConvenio")]
+        public string NumeroConvenio { get; set; }
     }
 
     // Representa um endereço
@@ -127,14 +134,12 @@ namespace BoletoNet.Wi2
         [JsonPropertyName("dataJurosMora")]
         public string DataJurosMora { get; set; }
 
-        // Campos opcionais para desconto
         [JsonPropertyName("outrosDescontos")]
         public string OutrosDescontos { get; set; }
 
         [JsonPropertyName("dataOutrosDescontos")]
         public string DataOutrosDescontos { get; set; }
 
-        // As instruções podem ser definidas individualmente, usando um dicionário (chave/valor)
         [JsonPropertyName("instrucoes")]
         public Dictionary<string, string> Instrucoes { get; set; }
 
@@ -149,10 +154,10 @@ namespace BoletoNet.Wi2
         public string CodigoBanco { get; set; }
 
         [JsonPropertyName("mostrarEnderecoCedente")]
-        public int MostrarEnderecoCedente { get; set; }
+        public string MostrarEnderecoCedente { get; set; }
 
         [JsonPropertyName("mostrarComprovanteEntrega")]
-        public int MostrarComprovanteEntrega { get; set; }
+        public string MostrarComprovanteEntrega { get; set; }
 
         [JsonPropertyName("caminhoPDF")]
         public string CaminhoPDF { get; set; }
@@ -204,9 +209,11 @@ namespace BoletoNet.Wi2
 
             var options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
             };
-            return JsonSerializer.Deserialize<RootJson>(jsonContent, options);
+
+            return JsonConvert.DeserializeObject<RootJson>(jsonContent);
+            //return JsonSerializer.Deserialize<RootJson>(jsonContent, options);
         }
     }
 }
