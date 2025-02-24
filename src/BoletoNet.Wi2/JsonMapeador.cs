@@ -36,15 +36,34 @@ namespace BoletoNet.Wi2
         /// </summary>
         public Boleto ConverterItemRemessa(ItemRemessaJson item)
         {
-            // Converter datas que estão no formato "ddMMyyyy"
-            DateTime dataVencimento = DateTime.ParseExact(item.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture);
-            DateTime dataMulta = DateTime.ParseExact(item.DataMulta, "ddMMyyyy", CultureInfo.InvariantCulture);
-            DateTime dataJurosMora = DateTime.ParseExact(item.DataJurosMora, "ddMMyyyy", CultureInfo.InvariantCulture);
+            DateTime dataVencimento, dataMulta, dataJurosMora;
+            decimal valorBoleto, percMulta, percJurosMora;
 
-            // Converter valores numéricos utilizando InvariantCulture
-            decimal valorBoleto = decimal.Parse(item.ValorBoleto, CultureInfo.InvariantCulture);
-            decimal percMulta = decimal.Parse(item.PercMulta, CultureInfo.InvariantCulture);
-            decimal percJurosMora = decimal.Parse(item.PercJurosMora, CultureInfo.InvariantCulture);
+            // Tratamento para datas
+            dataVencimento = !string.IsNullOrWhiteSpace(item.DataVencimento)
+                ? DateTime.ParseExact(item.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture)
+                : DateTime.MinValue;
+
+            dataMulta = !string.IsNullOrWhiteSpace(item.DataMulta)
+                ? DateTime.ParseExact(item.DataMulta, "ddMMyyyy", CultureInfo.InvariantCulture)
+                : DateTime.MinValue;
+
+            dataJurosMora = !string.IsNullOrWhiteSpace(item.DataJurosMora)
+                ? DateTime.ParseExact(item.DataJurosMora, "ddMMyyyy", CultureInfo.InvariantCulture)
+                : DateTime.MinValue;
+
+            // Tratamento para valores numéricos
+            valorBoleto = !string.IsNullOrWhiteSpace(item.ValorBoleto)
+                ? decimal.Parse(item.ValorBoleto, CultureInfo.InvariantCulture)
+                : 0m;
+
+            percMulta = !string.IsNullOrWhiteSpace(item.PercMulta)
+                ? decimal.Parse(item.PercMulta, CultureInfo.InvariantCulture)
+                : 0m;
+
+            percJurosMora = !string.IsNullOrWhiteSpace(item.PercJurosMora)
+                ? decimal.Parse(item.PercJurosMora, CultureInfo.InvariantCulture)
+                : 0m;
 
             // Mapeamento do endereço do sacado
             var sacadoEndereco = new Endereco

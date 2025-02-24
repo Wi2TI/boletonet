@@ -279,8 +279,8 @@ namespace BoletoNet.Testes
             Console.WriteLine("Iniciando geração de boletos...");
             try
             {
-               // BancoC6Hom bancoC6Hom = new BancoC6Hom();
-//bancoC6Hom.HomologacaoArquivoRemessa();
+                // BancoC6Hom bancoC6Hom = new BancoC6Hom();
+                //bancoC6Hom.HomologacaoArquivoRemessa();
 
                 Console.WriteLine("Iniciando geração de boletos...");
                 try
