@@ -49,6 +49,9 @@ namespace BoletoNet.Wi2
 
         [JsonPropertyName("uf")]
         public string UF { get; set; }
+
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
     }
 
     // Representa os dados do cedente

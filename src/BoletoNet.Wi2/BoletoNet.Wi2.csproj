@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeradorBoleto.cs" />
+    <Compile Include="JsonEmailRetorno.cs" />
     <Compile Include="JsonMapeador.cs" />
     <Compile Include="JsonLeitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

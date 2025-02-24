@@ -19,10 +19,11 @@ namespace BoletoNet.Wi2
 
         public Cobranca() { }
 
-        public string GerarBoletoHTML(string caminhoJSON, string conteudoJson)
+        public string GerarBoletoHTMLjson(string caminhoJSON, string conteudoJson)
         {
             string nomeArquivo, caminhoHTML;
-            
+            List<EnvioEmail> listaEnvioEmail = new List<EnvioEmail>();
+
             try
             {
                 JsonLeitor reader = new JsonLeitor();
@@ -38,13 +39,58 @@ namespace BoletoNet.Wi2
                     nomeArquivo = Regex.Replace(item.Boleto.CodigoBarra.LinhaDigitavel, @"[^\d]", "");
                     caminhoHTML = Path.Combine(json.BoletoBancario.CaminhoPDF, $"{nomeArquivo}.html");
 
-                    item.MontaHtmlNoArquivoLocal(caminhoHTML);
+                    File.WriteAllText(caminhoHTML, item.MontaHtmlEmbedded());
+
+                    // Criamos a lista de objetos EnvioEmail
+                    listaEnvioEmail.Add(
+                        new EnvioEmail
+                        {
+                            CaminhoArquivo = caminhoHTML,
+                            NumeroDocumento = item.Boleto.NumeroDocumento,
+                            LinhaDigitavel = nomeArquivo,
+                            Email = item.Sacado.Endereco.Email
+                        }
+                    );
                 }
-                return "";
+
+                return GerarJson.ObterJson(listaEnvioEmail);
             }
             catch (Exception ex)
             {
-                return $"ERRO: {ex}";
+                return ($"ERRO: {ex.Message}");
+            }
+        }
+
+        public string [] GerarBoletoHTML(string caminhoJSON, string conteudoJson)
+        {
+            string nomeArquivo, caminhoHTML;
+            List<string>sArquivosGerados = new List<string>();
+            
+            try
+            {
+                JsonLeitor reader = new JsonLeitor();
+                JsonMapeador mapeador = new JsonMapeador();
+                RootJson json = reader.LerConfiguracao(caminhoJSON, conteudoJson);
+
+                List<BoletoBancario> boletosBancarios = mapeador.ConverterBoletoBancario(json.BoletoBancario);
+
+                foreach (var item in boletosBancarios)
+                {
+                    item.Boleto.Valida();
+
+                    nomeArquivo = Regex.Replace(item.Boleto.CodigoBarra.LinhaDigitavel, @"[^\d]", "");
+                    caminhoHTML = Path.Combine(json.BoletoBancario.CaminhoPDF, $"{nomeArquivo}.html");
+                    File.WriteAllText(caminhoHTML, item.MontaHtmlEmbedded());
+
+                    sArquivosGerados.Add( caminhoHTML );
+                }
+
+                return sArquivosGerados.ToArray();
+            }
+            catch (Exception ex)
+            {
+                sArquivosGerados.Add($"ERRO: {ex.Message}");
+                return sArquivosGerados.ToArray(); 
             }
         }
 
@@ -83,7 +129,7 @@ namespace BoletoNet.Wi2
             }
             catch (Exception ex)
             {
-                return $"ERRO: {ex}";
+                return $"ERRO: {ex.Message}";
             }
         }
 
@@ -167,7 +213,7 @@ namespace BoletoNet.Wi2
             }
             catch (Exception ex)
             {
-                return $"ERRO: {ex}";
+                return $"ERRO: {ex.Message}";
             }
         }
     }

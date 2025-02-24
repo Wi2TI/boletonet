@@ -279,18 +279,19 @@ namespace BoletoNet.Testes
             Console.WriteLine("Iniciando geração de boletos...");
             try
             {
-                //BancoC6Hom bancoC6Hom = new BancoC6Hom();
-                //bancoC6Hom.HomologacaoArquivoRemessa();
+               // BancoC6Hom bancoC6Hom = new BancoC6Hom();
+//bancoC6Hom.HomologacaoArquivoRemessa();
 
                 Console.WriteLine("Iniciando geração de boletos...");
                 try
                 {
                     Cobranca cobranca = new Cobranca();
 
-                    cobranca.GerarBoletosPDF(@"c:\temp\boletoBancario.json", "");
-                    //cobranca.GerarRemessa(@"c:\temp\boletoBancario.json", "");
+                    //cobranca.GerarBoletosPDF(@"c:\temp\boletoBancario.json", "");
+                    cobranca.GerarRemessa(@"c:\temp\boletoBancario.json", "", "");
                     //Console.WriteLine(cobranca.GerarBoletoHTML(@"c:\temp\boletoBancario.json", ""));
                     //cobranca.GerarBoletoHTML(@"c:\temp\boletoBancario.json", "");
+                    //cobranca.GerarBoletoHTMLjson(@"c:\temp\boletoBancario.json", "");
                     Console.WriteLine("Boletos gerados e arquivos de remessa criados com sucesso!");
                 }
                 catch (Exception ex)

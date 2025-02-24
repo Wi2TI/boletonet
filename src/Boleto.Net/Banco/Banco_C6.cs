@@ -617,7 +617,7 @@ namespace BoletoNet
                 if (boleto.PercMulta > 0)
                 {
                     _detalhe.Append("2");
-                    _detalhe.Append(Utils.FitStringLength(boleto.PercMulta.ApenasNumeros(), 2, 2, '0', 0, true, true, true)); //Percentual Multa 9(2)V99 - (04)
+                    _detalhe.Append(Math.Truncate(boleto.PercMulta).ToString("00")); //Percentual Multa 9(2)V99 - (04) - Somente numeros inteiros
                 }
                 else
                 {

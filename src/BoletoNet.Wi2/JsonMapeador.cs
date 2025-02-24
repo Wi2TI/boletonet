@@ -19,7 +19,8 @@ namespace BoletoNet.Wi2
                 Bairro = cedenteJson.Endereco.Bairro,
                 Cidade = cedenteJson.Endereco.Cidade,
                 CEP = cedenteJson.Endereco.CEP,
-                UF = cedenteJson.Endereco.UF
+                UF = cedenteJson.Endereco.UF,
+                Email = cedenteJson.Endereco.Email
             };
 
             return new Cedente(cedenteJson.CpfCnpj, cedenteJson.Nome, cedenteJson.Agencia, cedenteJson.Conta, cedenteJson.DigitoConta)
@@ -54,7 +55,8 @@ namespace BoletoNet.Wi2
                 Bairro = item.Sacado.Endereco.Bairro,
                 Cidade = item.Sacado.Endereco.Cidade,
                 CEP = item.Sacado.Endereco.CEP,
-                UF = item.Sacado.Endereco.UF
+                UF = item.Sacado.Endereco.UF,
+                Email = item.Sacado.Endereco.Email
             };
 
             // Criar o objeto Sacado
