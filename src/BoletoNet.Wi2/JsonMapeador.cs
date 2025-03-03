@@ -69,7 +69,7 @@ namespace BoletoNet.Wi2
             var sacadoEndereco = new Endereco
             {
                 End = item.Sacado.Endereco.End,
-                Numero = item.Sacado.Endereco.Numero.ToString(),
+                Numero = item.Sacado.Endereco.Numero?.ToString() ?? string.Empty,
                 Complemento = item.Sacado.Endereco.Complemento,
                 Bairro = item.Sacado.Endereco.Bairro,
                 Cidade = item.Sacado.Endereco.Cidade,
