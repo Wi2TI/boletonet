@@ -148,7 +148,7 @@ namespace BoletoNet.Wi2
                 {
                     case "336":
                         boleto.EspecieDocumento = new EspecieDocumento_C6("1"); // Duplicata Mercantil
-                        boleto.TipoModalidade = "04"; // Modalidade obrigatória para C6
+                        boleto.TipoModalidade = "4"; // Modalidade obrigatória para C6
                         break;
                     default:
                         throw new Exception("Espécie de documento não configurada para o banco.");
